@@ -1,0 +1,88 @@
+* Sour Compiler
+
+A compiler is one component in a toolchain of programs
+used to create executables from source code
+
+** A simple code scanner using c++
+
+For a complex language with a large number of tokens, we need a more formalized approach to defining and scanning tokens.
+A formal approach will allow us to have a greater confidence that token definitions do not conflict and the scanner is implemented correctly.
+Further, a formal ap- proach will allow us to make the scanner compact and high performance – surprisingly,
+the scanner itself can be the performance bottleneck in a compiler, since every single character must be individually considered.
+The formal tools of regular expressions and finite automata allow us to state very precisely what may appear in a given token type.
+Then, auto- mated tools can process these definitions, find errors or ambiguities, and produce compact, high performance code.
+
+Regular expressions (REs) are a language for expressing patterns.
+They were first described in the 1950s by Stephen Kleene [4] as an element of his foundational work in automata theory and computability.
+Today, REs are found in slightly different forms in programming languages (Perl), standard libraries (PCRE), text editors (vi), command-line tools (grep), and many other places.
+We can use regular expressions as a compact and formal way of specifying the tokens accepted by the scanner of a compiler,
+and then automatically translate those expressions into working code.
+
+A finite automaton (FA) is an abstract machine that can be used to repre- sent certain forms of computation.
+Graphically, an FA consists of a number of states (represented by numbered circles) and a number of edges (repre- sented by labeled
+arrows) between those states.
+Each edge is labeled with one or more symbols drawn from an alphabet Σ.
+
+deterministic finite automaton (DFA). A DFA is a special case of an FA where every state has no more than one outgoing edge for a given symbol.
+Put another way, a DFA has no am- biguity: for every combination of state and input symbol,
+there is exactly one choice of what to do next.
+
+The alternative to a DFA is a nondeterministic finite automaton (NFA).
+An NFA is a perfectly valid FA, but it has an ambiguity that makes it some- what more difficult to work with.
+
+2
+An NFA can also have an ε (epsilon) transition, which represents the empty string.
+This transition can be taken without consuming any input symbols at all.
+For example, we could represent the regular expression a*(ab|ac) with this NFA
+
+To convert a regular expression to a nondeterministic finite automaton,
+we can follow an algorithm given first by McNaughton and Yamada, and then by Ken Thompson.
+
+Epsilon closure.
+ε−closure(n) is the set of NFA states reachable from NFA state n by zero or more ε transitions.
+
+*** Subset Construction Algorithm.
+
+Given an NFA with states N and start state N0, create an equivalent DFA with states D and start state D0.
+Let D0 = ε−closure(N0).
+Add D0 to a list.
+While items remain on the list:
+Let d be the next DFA state removed from the list. For each character c in Σ:
+Let T contain all NFA states Nk such that: Nj∈dandNj→−c Nk
+Create new DFA state Di = ε−closure(T)
+If Di is not already in the list, add it to the end.
+
+*** DFA Minimization Algorithm.
+
+Given a DFA with states S, create an equivalent DFA with an equal or fewer number of states T .
+First partition S into T such that: T0 = non-accepting states of S. T1 = accepting states of S.
+Repeat:
+∀Ti ∈T:
+∀c ∈ Σ:
+if Ti →−c { more than one T state },
+then split Ti into multiple T states
+such that c has the same action in each. Until no more states are split.
+
+Stated building using .net [time-2:00am 22 march]
+Step-1 Git repo using terminal
+
+> Creating a dir sour
+> Adding basic assests to it like .gitattribute ,lisence,.gitnore
+> $ git init
+> create repo in the main github website
+> In terminal $ git commit -m 'Initial Commit'
+> $ git add.
+> $ git add origin <link to the repo>
+
+> $ git push -u origin master
+To add add new created file
+> $ git add .
+> $ git commit -m "Add <filename>"
+> $ git push
+
+Step-1
+Create a dotnet core console app naming it sc for Sourcompiler
+cmd-> dotnet new console -o sc
+now edit the program.cs in the sc dir
+
+Creating class lexer parser syntax tree and enum of tokens
